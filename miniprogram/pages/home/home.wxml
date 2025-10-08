@@ -36,7 +36,7 @@
       <text class="feature-text">邀请记录</text>
       <view class="badge" wx:if="{{pendingRequestsCount > 0}}">{{pendingRequestsCount}}</view>
     </view>
-    <view class="feature-item">
+    <view class="feature-item" bindtap="openAnniversaryModal">
       <view class="feature-icon">📅</view>
       <text class="feature-text">纪念日</text>
     </view>
@@ -61,4 +61,11 @@
   userInfo="{{userInfo}}"
   bind:close="closeRequestsModal"
   bind:success="onRequestSuccess"
+/>
+
+<!-- 使用纪念日列表组件 -->
+<anniversary-list 
+  show="{{showAnniversaryModal}}" 
+  userInfo="{{userInfo}}"
+  bind:close="closeAnniversaryModal"
 />

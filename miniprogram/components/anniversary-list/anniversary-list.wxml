@@ -1,0 +1,140 @@
+<!-- miniprogram/components/anniversary-list/anniversary-list.wxml -->
+<view class="modal" wx:if="{{show}}">
+  <view class="modal-mask" bindtap="closeModal"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">纪念日</text>
+      <view class="header-actions">
+        <view class="add-btn" bindtap="openAddModal">＋</view>
+        <view class="close-btn" bindtap="closeModal">✕</view>
+      </view>
+    </view>
+
+    <view class="anniversaries-list" wx:if="{{!loading}}">
+      <view class="empty" wx:if="{{anniversaries.length === 0}}">
+        <text class="empty-icon">📅</text>
+        <text class="empty-text">暂无纪念日</text>
+        <button class="empty-add-btn" bindtap="openAddModal">添加第一个纪念日</button>
+      </view>
+
+      <view class="anniversary-item" wx:for="{{anniversaries}}" wx:key="_id">
+        <view class="item-content">
+          <!-- 使用 HTTPS 临时链接 -->
+          <view class="item-image-wrapper" wx:if="{{item.imageTempUrl}}">
+            <image 
+              src="{{item.imageTempUrl}}" 
+              class="item-image" 
+              mode="aspectFill"
+              bindtap="previewImage"
+              data-url="{{item.imageTempUrl}}"
+            ></image>
+          </view>
+          
+          <view class="item-info">
+            <view class="item-header">
+              <text class="item-title">{{item.title}}</text>
+            </view>
+            <view class="item-date">
+              <text class="date-text">{{item.date}}</text>
+              <text class="yearly-badge" wx:if="{{item.isYearly}}">每年</text>
+            </view>
+            <view class="item-description" wx:if="{{item.description}}">
+              {{item.description}}
+            </view>
+            <view class="item-countdown">
+              <text class="countdown-text">{{item.daysLeft}}</text>
+            </view>
+          </view>
+        </view>
+        <view class="item-actions">
+          <view class="delete-btn" bindtap="deleteAnniversary" data-item="{{item}}">
+            🗑️
+          </view>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+</view>
+
+<!-- 添加纪念日弹窗 -->
+<view class="add-modal" wx:if="{{showAddModal}}">
+  <view class="modal-mask" bindtap="closeAddModal"></view>
+  <view class="add-modal-content">
+    <view class="add-modal-header">
+      <text class="add-modal-title">添加纪念日</text>
+      <view class="close-btn" bindtap="closeAddModal">✕</view>
+    </view>
+
+    <view class="form">
+      <view class="form-group">
+        <text class="form-label">标题</text>
+        <input
+          class="form-input"
+          placeholder="例如：第一次约会"
+          value="{{formData.title}}"
+          bindinput="onTitleInput"
+        />
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">日期</text>
+        <picker mode="date" value="{{formData.date}}" bindchange="onDateChange">
+          <view class="date-picker">{{formData.date}}</view>
+        </picker>
+      </view>
+
+      <!-- 图片上传 -->
+      <view class="form-group">
+        <text class="form-label">纪念日图片</text>
+        <view class="image-upload-container">
+          <!-- 使用 HTTPS 临时链接显示预览 -->
+          <view class="image-preview" wx:if="{{formData.imageTempUrl}}">
+            <image 
+              src="{{formData.imageTempUrl}}" 
+              class="preview-image" 
+              mode="aspectFill"
+              bindtap="previewImage"
+              data-url="{{formData.imageTempUrl}}"
+            ></image>
+            <view class="delete-image-btn" bindtap="deleteImage" catchtap="deleteImage">
+              ✕
+            </view>
+          </view>
+          <view class="upload-btn" wx:else bindtap="chooseImage">
+            <text class="upload-icon">📷</text>
+            <text class="upload-text">{{uploadingImage ? '上传中...' : '点击上传图片'}}</text>
+          </view>
+        </view>
+      </view>
+
+      <view class="form-group">
+        <text class="form-label">描述（可选）</text>
+        <textarea
+          class="form-textarea"
+          placeholder="添加一些描述..."
+          value="{{formData.description}}"
+          bindinput="onDescriptionInput"
+          maxlength="200"
+        />
+      </view>
+
+      <view class="form-group checkbox-group">
+        <label class="checkbox-label">
+          <checkbox
+            checked="{{formData.isYearly}}"
+            bindchange="onYearlyChange"
+          />
+          <text>每年重复</text>
+        </label>
+      </view>
+
+      <button class="submit-btn" bindtap="submitForm" disabled="{{uploadingImage}}">
+        添加
+      </button>
+    </view>
+  </view>
+</view>

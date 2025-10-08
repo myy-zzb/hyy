@@ -11,6 +11,7 @@ Page({
         loveDays: 0,
         showBindModal: false,
         showRequestsModal: false,
+        showAnniversaryModal: false, // 新增
         pendingRequestsCount: 0
     },
 
@@ -264,6 +265,20 @@ Page({
         });
         this.refreshUserInfo();
         this.checkPendingRequests();
+    },
+
+    // 打开纪念日列表 - 新增
+    openAnniversaryModal: function() {
+        this.setData({
+            showAnniversaryModal: true
+        });
+    },
+
+    // 关闭纪念日列表 - 新增
+    closeAnniversaryModal: function() {
+        this.setData({
+            showAnniversaryModal: false
+        });
     },
 
     onPullDownRefresh() {},

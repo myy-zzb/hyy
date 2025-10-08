@@ -1,7 +1,8 @@
 {
   "usingComponents": {
     "bind-partner": "/components/bind-partner/bind-partner",
-    "partner-requests": "/components/partner-requests/partner-requests"
+    "partner-requests": "/components/partner-requests/partner-requests",
+    "anniversary-list": "/components/anniversary-list/anniversary-list"
   },
   "navigationBarTitleText": "恋爱"
 }
