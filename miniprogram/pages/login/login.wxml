@@ -2,7 +2,7 @@
 <view class="container">
   <view class="login-card">
     <view class="logo">
-      <image src="/images/logo.png" mode="aspectFit" class="logo-img"></image>
+      <image src="https://636c-cloud1-5gl8qa4h2f229845-1381701172.tcb.qcloud.la/logo.png?sign=d2db3aa2925342c2c7f27dd3395dd55b&t=1759927926" mode="aspectFit" class="logo-img"></image>
     </view>
     <view class="title">耀艺恋😋</view>
     

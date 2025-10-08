@@ -146,7 +146,7 @@ Page({
 
                 // 手机号未注册，创建新用户
                 const genderText = gender === 'male' ? '男' : '女';
-                const defaultAvatar = '/images/default.png';
+                const defaultAvatar = 'https://636c-cloud1-5gl8qa4h2f229845-1381701172.tcb.qcloud.la/default.png?sign=5b313fe901b58deb7e3039f1bccff4f4&t=1759927899';
 
                 db.collection('user').add({
                     data: {
