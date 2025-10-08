@@ -1,0 +1,53 @@
+
+<!-- 伴侣请求列表组件 -->
+<view class="modal" wx:if="{{show}}">
+  <view class="modal-mask" bindtap="closeModal"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">伴侣邀请</text>
+      <view class="close-btn" bindtap="closeModal">✕</view>
+    </view>
+
+    <view class="requests-list" wx:if="{{!loading}}">
+      <view class="empty" wx:if="{{requests.length === 0}}">
+        <text class="empty-icon">📭</text>
+        <text class="empty-text">暂无待处理的邀请</text>
+      </view>
+
+      <view class="request-item" wx:for="{{requests}}" wx:key="_id">
+        <view class="request-info">
+          <view class="user-name">{{item.fromUserName || item.fromUserPhone}}</view>
+          <view class="request-detail">
+            <text class="detail-label">手机号：</text>
+            <text class="detail-value">{{item.fromUserPhone}}</text>
+          </view>
+          <view class="request-detail">
+            <text class="detail-label">恋爱开始：</text>
+            <text class="detail-value">{{item.loveStartDate}}</text>
+          </view>
+        </view>
+
+        <view class="request-actions">
+          <button 
+            class="reject-btn" 
+            bindtap="rejectRequest" 
+            data-request="{{item}}"
+          >
+            拒绝
+          </button>
+          <button 
+            class="accept-btn" 
+            bindtap="acceptRequest" 
+            data-request="{{item}}"
+          >
+            接受
+          </button>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+</view>

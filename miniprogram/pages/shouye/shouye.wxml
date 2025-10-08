@@ -1,0 +1,20 @@
+<!--pages/shouye/shouye.wxml-->
+<view class="container">
+  <view class="user-card" wx:if="{{isLoggedIn}}">
+    <view class="avatar-section">
+      <image src="{{userInfo.avatarUrl}}" class="avatar" mode="aspectFill"></image>
+    </view>
+    
+    <view class="user-info">
+      <text class="username">{{userInfo.username}}</text>
+      <text class="phone">手机号：{{userInfo.phone}}</text>
+      <text class="gender">性别：{{userInfo.genderText}}</text>
+    </view>
+
+    <button class="logout-btn" bindtap="handleLogout">退出登录</button>
+  </view>
+
+  <view class="loading" wx:else>
+    <text>加载中...</text>
+  </view>
+</view>

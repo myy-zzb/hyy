@@ -1,0 +1,64 @@
+/* pages/shouye/shouye.wxss */
+.container {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 40rpx;
+}
+
+.user-card {
+  width: 100%;
+  max-width: 600rpx;
+  background: white;
+  border-radius: 40rpx;
+  padding: 80rpx 60rpx;
+  box-shadow: 0 20rpx 60rpx rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.avatar-section {
+  margin-bottom: 40rpx;
+}
+
+.avatar {
+  width: 200rpx;
+  height: 200rpx;
+  border-radius: 50%;
+  border: 4rpx solid #667eea;
+}
+
+.user-info {
+  margin-bottom: 60rpx;
+}
+
+.username {
+  display: block;
+  font-size: 48rpx;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20rpx;
+}
+
+.phone, .gender {
+  display: block;
+  font-size: 28rpx;
+  color: #666;
+  margin-bottom: 10rpx;
+}
+
+.logout-btn {
+  width: 100%;
+  height: 88rpx;
+  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  color: white;
+  border-radius: 16rpx;
+  font-size: 32rpx;
+  border: none;
+}
+
+.loading {
+  color: white;
+  font-size: 32rpx;
+}

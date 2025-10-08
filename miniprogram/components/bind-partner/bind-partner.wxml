@@ -1,0 +1,39 @@
+<!-- 绑定伴侣组件 -->
+<view class="modal" wx:if="{{show}}">
+  <view class="modal-mask" bindtap="closeModal"></view>
+  <view class="modal-content">
+    <view class="modal-title">邀请伴侣</view>
+
+    <view class="input-group">
+      <text class="input-label">伴侣手机号</text>
+      <input
+        class="modal-input"
+        type="number"
+        maxlength="11"
+        placeholder="请输入伴侣的手机号"
+        value="{{bindPhone}}"
+        bindinput="onBindPhoneInput"
+      />
+    </view>
+
+    <view class="input-group">
+      <text class="input-label">恋爱开始日期</text>
+      <picker mode="date" value="{{bindDate}}" bindchange="onBindDateChange">
+        <view class="date-picker">
+          {{bindDate || '请选择日期'}}
+        </view>
+      </picker>
+    </view>
+
+    <view class="tip-text">
+      <text>💡 发送后需要对方同意才能绑定成功</text>
+    </view>
+
+    <view class="modal-buttons">
+      <button class="cancel-btn" bindtap="closeModal">取消</button>
+      <button class="confirm-btn" bindtap="submitBindPartner" loading="{{isBinding}}">
+        发送邀请
+      </button>
+    </view>
+  </view>
+</view>

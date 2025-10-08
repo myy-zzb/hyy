@@ -1,0 +1,86 @@
+<!--pages/login/login.wxml-->
+<view class="container">
+  <view class="login-card">
+    <view class="logo">
+      <image src="/images/logo.png" mode="aspectFit" class="logo-img"></image>
+    </view>
+    <view class="title">耀艺恋😋</view>
+    
+    <view class="form">
+      <!-- 手机号输入 -->
+      <view class="input-group">
+        <input 
+          class="input" 
+          placeholder="请输入手机号" 
+          type="number"
+          maxlength="11"
+          value="{{phone}}" 
+          bindinput="onPhoneInput"
+        />
+      </view>
+      
+      <!-- 密码输入 -->
+      <view class="input-group">
+        <input 
+          class="input" 
+          placeholder="请输入密码(6-20位)" 
+          password="{{!showPassword}}"
+          maxlength="20"
+          value="{{password}}" 
+          bindinput="onPasswordInput"
+        />
+        <view class="eye-icon" bindtap="togglePassword">
+          {{showPassword ? '👁️' : '👁️‍🗨️'}}
+        </view>
+      </view>
+      
+      <!-- 注册时需要确认密码 -->
+      <view class="input-group" wx:if="{{isRegisterMode}}">
+        <input 
+          class="input" 
+          placeholder="请确认密码" 
+          type="{{showConfirmPassword ? 'text' : 'password'}}"
+          maxlength="20"
+          value="{{confirmPassword}}" 
+          bindinput="onConfirmPasswordInput"
+        />
+        <view class="eye-icon" bindtap="toggleConfirmPassword">
+          {{showConfirmPassword ? '👁️' : '👁️‍🗨️'}}
+        </view>
+      </view>
+      
+      <!-- 性别选择（仅注册时显示） -->
+      <view class="input-group gender-group" wx:if="{{isRegisterMode}}">
+        <view class="gender-label">选择性别</view>
+        <view class="gender-options">
+          <view 
+            class="gender-option {{gender === 'male' ? 'active' : ''}}" 
+            bindtap="selectGender" 
+            data-gender="male"
+          >
+            <text class="gender-icon">👨</text>
+            <text class="gender-text">男生</text>
+          </view>
+          <view 
+            class="gender-option {{gender === 'female' ? 'active' : ''}}" 
+            bindtap="selectGender" 
+            data-gender="female"
+          >
+            <text class="gender-icon">👩</text>
+            <text class="gender-text">女生</text>
+          </view>
+        </view>
+      </view>
+      
+      <!-- 登录/注册按钮 -->
+      <button class="submit-btn" bindtap="handleSubmit">
+        {{isRegisterMode ? '注册' : '登录'}}
+      </button>
+      
+      <!-- 切换登录/注册模式 -->
+      <view class="switch-mode" bindtap="switchMode">
+        {{isRegisterMode ? '已有账号？去登录' : '没有账号？去注册'}}
+      </view>
+    </view>
+  </view>
+</view>

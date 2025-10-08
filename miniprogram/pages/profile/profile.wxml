@@ -1,0 +1,68 @@
+<!--pages/profile/profile.wxml-->
+<view class="container">
+  <view class="profile-card">
+    <!-- 头像和基本信息 -->
+    <view class="avatar-section">
+      <image src="{{userInfo.avatarUrl}}" class="avatar" mode="aspectFill"></image>
+      <text class="username">{{userInfo.username}}</text>
+      <text class="phone">{{userInfo.phone}}</text>
+    </view>
+
+    <!-- 个人信息列表 -->
+    <view class="info-list">
+      <view class="info-item">
+        <text class="info-label">性别</text>
+        <text class="info-value">{{userInfo.genderText}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">伴侣</text>
+        <text class="info-value">{{partnerInfo ? (partnerInfo.username || partnerInfo.phone) : '未绑定'}}</text>
+      </view>
+      <view class="info-item">
+        <text class="info-label">恋爱开始</text>
+        <text class="info-value">{{userInfo.loveStartDate || '未设置'}}</text>
+      </view>
+      <view class="info-item" bindtap="editProfile">
+        <text class="info-label">编辑资料</text>
+        <text class="info-arrow">›</text>
+      </view>
+    </view>
+
+    <!-- 退出登录按钮 -->
+    <button class="logout-btn" bindtap="handleLogout">退出登录</button>
+  </view>
+</view>
+
+<!-- 编辑资料弹窗 -->
+<view class="modal" wx:if="{{showEditModal}}">
+  <view class="modal-mask" bindtap="cancelEdit"></view>
+  <view class="modal-content">
+    <view class="modal-title">编辑资料</view>
+    
+    <view class="edit-avatar-section">
+      <button 
+        class="avatar-button" 
+        open-type="chooseAvatar" 
+        bindchooseavatar="onChooseAvatar"
+      >
+        <image src="{{editAvatarUrl}}" class="edit-avatar"></image>
+      </button>
+      <text class="avatar-tip">点击头像修改</text>
+    </view>
+    
+    <view class="input-group">
+      <input 
+        class="input" 
+        type="nickname"
+        placeholder="请输入昵称" 
+        value="{{editNickname}}"
+        bindinput="onEditNickname"
+      />
+    </view>
+    
+    <view class="modal-buttons">
+      <button class="cancel-btn" bindtap="cancelEdit">取消</button>
+      <button class="confirm-btn" bindtap="confirmEdit">确认</button>
+    </view>
+  </view>
+</view>
