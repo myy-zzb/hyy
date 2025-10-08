@@ -1,0 +1,213 @@
+<view class="modal" wx:if="{{show}}">
+  <view class="modal-mask" bindtap="closeModal"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">拉屎记录 💩</text>
+      <view class="header-actions">
+        <view class="add-btn" bindtap="openAddModal">＋</view>
+        <view class="close-btn" bindtap="closeModal">✕</view>
+      </view>
+    </view>
+
+    <!-- 统计信息 -->
+    <view class="stats-section">
+      <view class="stat-item">
+        <text class="stat-number">{{stats.total}}</text>
+        <text class="stat-label">总次数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.todayCount}}</text>
+        <text class="stat-label">今日</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.weekCount}}</text>
+        <text class="stat-label">本周</text>
+      </view>
+    </view>
+
+    <view class="poops-list" wx:if="{{!loading}}">
+      <view class="empty" wx:if="{{poops.length === 0}}">
+        <text class="empty-icon">🚽</text>
+        <text class="empty-text">还没有记录</text>
+        <text class="empty-subtext">养成记录习惯，关注肠道健康~</text>
+      </view>
+
+      <view class="poop-item" wx:for="{{poops}}" wx:key="_id">
+        <view class="item-header">
+          <view class="user-info">
+            <text class="user-name">{{item.userName}}</text>
+            <text class="poop-type" style="color: {{item.typeColor}}">{{item.typeEmoji}} {{item.typeLabel}}</text>
+          </view>
+          <text class="feeling-emoji">{{item.feelingEmoji}}</text>
+        </view>
+        
+        <view class="item-content">
+          <view class="item-date">
+            <text>📅 {{item.poopDate}} {{item.poopTime}}</text>
+          </view>
+          <view class="item-info-row">
+            <text class="info-tag">{{item.locationEmoji}} {{item.locationLabel}}</text>
+            <text class="info-tag">⏱️ {{item.duration}}分钟</text>
+          </view>
+          <view class="item-warning" wx:if="{{item.hasBlood}}">
+            <text>⚠️ 带血，建议就医</text>
+          </view>
+        </view>
+
+        <view class="item-actions" catchtap="deletePoop" data-poop="{{item}}">
+          <text class="delete-icon">🗑️</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+</view>
+
+<!-- 添加记录弹窗 - 在最外层阻止穿透 -->
+<view class="add-modal" wx:if="{{showAddModal}}">
+  <view class="modal-mask" bindtap="closeAddModal"></view>
+  <view class="add-modal-content">
+    <view class="add-modal-header">
+      <text class="add-modal-title">记录拉屎 💩</text>
+      <view class="close-btn" bindtap="closeAddModal">✕</view>
+    </view>
+
+    <!-- 用 view 替换 scroll-view -->
+    <view class="form-scroll">
+      <view class="form">
+        <view class="form-group">
+          <text class="form-label">拉屎时间</text>
+          <view class="datetime-row">
+            <picker mode="date" value="{{formData.poopDate}}" bindchange="onDateChange" class="datetime-picker">
+              <view class="picker-display">📅 {{formData.poopDate}}</view>
+            </picker>
+            <picker mode="time" value="{{formData.poopTime}}" bindchange="onTimeChange" class="datetime-picker">
+              <view class="picker-display">🕐 {{formData.poopTime}}</view>
+            </picker>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">便便类型</text>
+          <view class="type-options">
+            <view 
+              class="type-option {{formData.poopType === item.value ? 'active' : ''}}" 
+              wx:for="{{poopTypeOptions}}" 
+              wx:key="value"
+              bindtap="selectPoopType"
+              data-type="{{item.value}}"
+              style="border-color: {{item.color}}"
+            >
+              <text class="type-emoji">{{item.emoji}}</text>
+              <text class="type-text">{{item.label}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">蹲坑时长（分钟）</text>
+          <slider 
+            min="1" 
+            max="60" 
+            value="{{formData.duration}}" 
+            show-value
+            bindchange="onDurationChange"
+            activeColor="#667eea"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">拉完感觉</text>
+          <view class="feeling-options">
+            <view 
+              class="feeling-option {{formData.feeling === item.value ? 'active' : ''}}" 
+              wx:for="{{feelingOptions}}" 
+              wx:key="value"
+              bindtap="selectFeeling"
+              data-feeling="{{item.value}}"
+            >
+              <text class="feeling-emoji">{{item.emoji}}</text>
+              <text class="feeling-text">{{item.label}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">拉屎地点</text>
+          <view class="location-options">
+            <view 
+              class="location-option {{formData.location === item.value ? 'active' : ''}}" 
+              wx:for="{{locationOptions}}" 
+              wx:key="value"
+              bindtap="selectLocation"
+              data-location="{{item.value}}"
+            >
+              <text class="location-emoji">{{item.emoji}}</text>
+              <text class="location-text">{{item.label}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">便便颜色</text>
+          <view class="color-options">
+            <view 
+              class="color-option {{formData.color === item.value ? 'active' : ''}}" 
+              wx:for="{{colorOptions}}" 
+              wx:key="value"
+              bindtap="selectColor"
+              data-color="{{item.value}}"
+            >
+              <view class="color-circle" style="background: {{item.color}}"></view>
+              <text class="color-text">{{item.label}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">气味等级</text>
+          <view class="smell-options">
+            <view 
+              class="smell-option {{formData.smell === item.value ? 'active' : ''}}" 
+              wx:for="{{smellOptions}}" 
+              wx:key="value"
+              bindtap="selectSmell"
+              data-smell="{{item.value}}"
+            >
+              <text class="smell-emoji">{{item.emoji}}</text>
+              <text class="smell-text">{{item.label}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <view class="blood-check">
+            <text class="form-label">是否带血</text>
+            <switch checked="{{formData.hasBlood}}" bindchange="toggleBlood" color="#ff6b6b"/>
+          </view>
+          <view class="blood-warning" wx:if="{{formData.hasBlood}}">
+            <text>⚠️ 建议及时就医检查</text>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">备注（可选）</text>
+          <textarea
+            class="form-textarea"
+            placeholder="记录其他信息..."
+            value="{{formData.note}}"
+            bindinput="onNoteInput"
+            maxlength="200"
+          />
+        </view>
+
+        <button class="submit-btn" bindtap="submitForm">
+          保存记录
+        </button>
+      </view>
+    </view>
+  </view>
+</view>

@@ -3,7 +3,8 @@
     "bind-partner": "/components/bind-partner/bind-partner",
     "partner-requests": "/components/partner-requests/partner-requests",
     "anniversary-list": "/components/anniversary-list/anniversary-list",
-    "quarrel-list": "/components/quarrel-list/quarrel-list"
+    "quarrel-list": "/components/quarrel-list/quarrel-list",
+    "poop-list": "/components/poop-list/poop-list"
 
   },
   "navigationBarTitleText": "恋爱"

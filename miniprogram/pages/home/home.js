@@ -11,7 +11,8 @@ Page({
         loveDays: 0,
         showBindModal: false,
         showRequestsModal: false,
-        showAnniversaryModal: false, // 新增
+        showAnniversaryModal: false,
+        showPoopModal: false,  // 确保这个存在
         pendingRequestsCount: 0,
         showQuarrelModal: false
     },
@@ -293,6 +294,19 @@ Page({
     closeQuarrelModal: function() {
         this.setData({
             showQuarrelModal: false
+        });
+    },
+
+    // 打开拉屎弹窗
+    openPoopModal: function() {
+        this.setData({
+            showPoopModal: true
+        });
+    },
+
+    closePoopModal: function() {
+        this.setData({
+            showPoopModal: false
         });
     },
 

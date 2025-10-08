@@ -1,77 +1,68 @@
 <view class="container">
-  <view class="header" wx:if="{{userInfo}}">
-    <text class="welcome">Hi, {{userInfo.username}} 💕</text>
-    <view class="notification-btn" bindtap="openRequestsModal" wx:if="{{pendingRequestsCount > 0}}">
-      <text class="notification-icon">🔔</text>
-      <view class="notification-badge">{{pendingRequestsCount}}</view>
+    <view class="header" wx:if="{{userInfo}}">
+        <text class="welcome">Hi, {{userInfo.username}} 💕</text>
+        <view class="notification-btn" bindtap="openRequestsModal" wx:if="{{pendingRequestsCount > 0}}">
+            <text class="notification-icon">🔔</text>
+            <view class="notification-badge">{{pendingRequestsCount}}</view>
+        </view>
     </view>
-  </view>
 
-  <!-- 恋爱状态 -->
-  <view class="love-card" wx:if="{{partnerInfo}}">
-    <view class="love-icon">❤️</view>
-    <view class="love-days">
-      <text class="days-number">{{loveDays}}</text>
-      <text class="days-text">天</text>
+    <!-- 恋爱状态 -->
+    <view class="love-card" wx:if="{{partnerInfo}}">
+        <view class="love-icon">❤️</view>
+        <view class="love-days">
+            <text class="days-number">{{loveDays}}</text>
+            <text class="days-text">天</text>
+        </view>
+        <view class="love-date">
+            <text>与 {{partnerInfo.username || partnerInfo.phone}} 自 {{loveStartDate}} 起</text>
+        </view>
     </view>
-    <view class="love-date">
-      <text>与 {{partnerInfo.username || partnerInfo.phone}} 自 {{loveStartDate}} 起</text>
-    </view>
-  </view>
 
-  <view class="love-card empty" wx:else>
-    <view class="love-icon">💌</view>
-    <text class="empty-text">还没有绑定伴侣，快去邀请 TA 吧</text>
-    <button class="bind-btn" bindtap="openBindModal">邀请伴侣</button>
-  </view>
+    <view class="love-card empty" wx:else>
+        <view class="love-icon">💌</view>
+        <text class="empty-text">还没有绑定伴侣，快去邀请 TA 吧</text>
+        <button class="bind-btn" bindtap="openBindModal">邀请伴侣</button>
+    </view>
 
-  <!-- 功能按钮 -->
-  <view class="feature-grid">
-    <view class="feature-item" bindtap="openBindModal">
-      <view class="feature-icon">👫</view>
-      <text class="feature-text">{{partnerInfo ? '重新邀请' : '邀请伴侣'}}</text>
+    <!-- 功能按钮 -->
+    <view class="feature-grid">
+        <view class="feature-item" bindtap="openBindModal">
+            <view class="feature-icon">👫</view>
+            <text class="feature-text">{{partnerInfo ? '重新邀请' : '邀请伴侣'}}</text>
+        </view>
+        <view class="feature-item" bindtap="openRequestsModal">
+            <view class="feature-icon">📨</view>
+            <text class="feature-text">邀请记录</text>
+            <view class="badge" wx:if="{{pendingRequestsCount > 0}}">{{pendingRequestsCount}}</view>
+        </view>
+        <view class="feature-item" bindtap="openAnniversaryModal">
+            <view class="feature-icon">📅</view>
+            <text class="feature-text">纪念日</text>
+        </view>
+        <view class="feature-item" bindtap="openQuarrelModal">
+            <view class="feature-icon">💢</view>
+            <text class="feature-text">吵架记录</text>
+        </view>
+        <view class="feature-item" bindtap="openPoopModal">
+            <view class="feature-icon">💩</view>
+            <text class="feature-text">拉屎记录</text>
+        </view>
     </view>
-    <view class="feature-item" bindtap="openRequestsModal">
-      <view class="feature-icon">📨</view>
-      <text class="feature-text">邀请记录</text>
-      <view class="badge" wx:if="{{pendingRequestsCount > 0}}">{{pendingRequestsCount}}</view>
-    </view>
-    <view class="feature-item" bindtap="openAnniversaryModal">
-      <view class="feature-icon">📅</view>
-      <text class="feature-text">纪念日</text>
-    </view>
-    <view class="feature-item" bindtap="openQuarrelModal">
-        <view class="feature-icon">💢</view>
-        <text class="feature-text">吵架记录</text>
-    </view>
-  </view>
 </view>
+    <!-- 使用绑定伴侣组件 -->
+    <bind-partner show="{{showBindModal}}" userInfo="{{userInfo}}" bind:close="closeBindModal" bind:success="onBindSuccess" />
 
-<!-- 使用绑定伴侣组件 -->
-<bind-partner 
-  show="{{showBindModal}}" 
-  userInfo="{{userInfo}}"
-  bind:close="closeBindModal"
-  bind:success="onBindSuccess"
-/>
+    <!-- 使用伴侣请求列表组件 -->
+    <partner-requests show="{{showRequestsModal}}" userInfo="{{userInfo}}" bind:close="closeRequestsModal" bind:success="onRequestSuccess" />
 
-<!-- 使用伴侣请求列表组件 -->
-<partner-requests 
-  show="{{showRequestsModal}}" 
-  userInfo="{{userInfo}}"
-  bind:close="closeRequestsModal"
-  bind:success="onRequestSuccess"
-/>
+    <!-- 使用纪念日列表组件 -->
+    <anniversary-list show="{{showAnniversaryModal}}" userInfo="{{userInfo}}" bind:close="closeAnniversaryModal" />
 
-<!-- 使用纪念日列表组件 -->
-<anniversary-list 
-  show="{{showAnniversaryModal}}" 
-  userInfo="{{userInfo}}"
-  bind:close="closeAnniversaryModal"
-/>
+    <quarrel-list show="{{showQuarrelModal}}" userInfo="{{userInfo}}" bind:close="closeQuarrelModal" />
 
-<quarrel-list 
-  show="{{showQuarrelModal}}" 
-  userInfo="{{userInfo}}"
-  bind:close="closeQuarrelModal"
-/>
+    <poop-list 
+        show="{{showPoopModal}}" 
+        userInfo="{{userInfo}}"
+        bind:close="closePoopModal"
+    />

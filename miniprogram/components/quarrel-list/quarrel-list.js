@@ -344,6 +344,17 @@ Component({
             const h = `0${date.getHours()}`.slice(-2);
             const m = `0${date.getMinutes()}`.slice(-2);
             return `${h}:${m}`;
+        },
+
+        // 阻止触摸移动事件穿透
+        preventTouchMove(e) {
+            return false;
+        },
+
+        // 阻止事件冒泡（用于内容区域）
+        stopPropagation(e) {
+            // 不做任何处理，只是阻止事件继续向上传播
+            return true;
         }
     }
 });

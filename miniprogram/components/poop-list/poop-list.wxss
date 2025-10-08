@@ -1,11 +1,12 @@
-/* miniprogram/components/quarrel-list/quarrel-list.wxss */
+/* filepath: e:\wechatProject\hyy-cloud\miniprogram\components\poop-list\poop-list.wxss */
+/* miniprogram/components/poop-list/poop-list.wxss */
 .modal {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1000;
+  z-index: 2000; /* 列表弹窗层级 */
 }
 
 .modal-mask {
@@ -55,7 +56,7 @@
 .add-btn {
   width: 60rpx;
   height: 60rpx;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
   color: white;
   border-radius: 50%;
   display: flex;
@@ -79,7 +80,7 @@
 .stats-section {
   display: flex;
   padding: 30rpx 50rpx;
-  background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+  background: linear-gradient(135deg, #FFF8DC 0%, #FAEBD7 100%);
   gap: 20rpx;
   flex-shrink: 0;
 }
@@ -93,7 +94,7 @@
   display: block;
   font-size: 48rpx;
   font-weight: bold;
-  color: #ff6b6b;
+  color: #8B4513;
   margin-bottom: 8rpx;
 }
 
@@ -103,7 +104,7 @@
   color: #999;
 }
 
-.quarrels-list {
+.poops-list {
   flex: 1;
   overflow-y: auto;
   padding: 30rpx 50rpx;
@@ -133,7 +134,7 @@
   color: #999;
 }
 
-.quarrel-item {
+.poop-item {
   background: #f8f9fa;
   border-radius: 20rpx;
   padding: 30rpx;
@@ -147,32 +148,27 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20rpx;
-  padding-right: 0;
 }
 
-.severity-badge {
-  display: inline-flex;
-  align-items: center;
+.user-info {
+  display: flex;
+  flex-direction: column;
   gap: 8rpx;
-  padding: 8rpx 20rpx;
-  border-radius: 30rpx;
-  color: white;
-  font-size: 24rpx;
-  max-width: 200rpx;
 }
 
-.severity-emoji {
+.user-name {
   font-size: 28rpx;
-  flex-shrink: 0;
+  font-weight: bold;
+  color: #333;
 }
 
-.severity-text {
+.poop-type {
+  font-size: 24rpx;
   font-weight: 500;
 }
 
-.item-mood {
-  font-size: 40rpx;
-  flex-shrink: 0;
+.feeling-emoji {
+  font-size: 48rpx;
 }
 
 .item-content {
@@ -185,27 +181,24 @@
   margin-bottom: 12rpx;
 }
 
-.item-reason {
-  font-size: 28rpx;
-  color: #333;
-  line-height: 1.6;
+.item-info-row {
+  display: flex;
+  gap: 15rpx;
   margin-bottom: 12rpx;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
 }
 
-.reconcile-status {
-  margin-top: 12rpx;
+.info-tag {
+  font-size: 22rpx;
+  color: #666;
+  background: #e8e8e8;
+  padding: 6rpx 12rpx;
+  border-radius: 8rpx;
 }
 
-.reconcile-tag {
-  display: inline-block;
-  padding: 6rpx 16rpx;
-  background: #f6ffed;
-  color: #52c41a;
+.item-warning {
+  background: #fff3cd;
+  color: #856404;
+  padding: 10rpx;
   border-radius: 8rpx;
   font-size: 22rpx;
 }
@@ -236,14 +229,14 @@
   color: #999;
 }
 
-/* 添加弹窗 */
+/* 添加弹窗 - 提高层级 */
 .add-modal {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1001;
+  z-index: 2100; /* 比列表弹窗(2000)高，确保在上层 */
 }
 
 .add-modal-content {
@@ -279,9 +272,7 @@
 .form-scroll {
   flex: 1;
   overflow-y: auto;
-  /* 让内容可滚动 */
   -webkit-overflow-scrolling: touch;
-  /* 兼容iOS弹性滚动 */
 }
 
 .form {
@@ -330,13 +321,23 @@
   font-size: 28rpx;
 }
 
-.severity-options {
+.type-options,
+.feeling-options,
+.location-options,
+.color-options,
+.smell-options {
   display: flex;
   gap: 15rpx;
+  flex-wrap: wrap;
 }
 
-.severity-option {
+.type-option,
+.feeling-option,
+.location-option,
+.color-option,
+.smell-option {
   flex: 1;
+  min-width: calc(25% - 12rpx);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -347,50 +348,61 @@
   transition: all 0.3s;
 }
 
-.severity-option.active {
+.type-option.active,
+.feeling-option.active,
+.location-option.active,
+.color-option.active,
+.smell-option.active {
   border-width: 3rpx;
+  border-color: #8B4513;
   transform: scale(1.05);
 }
 
-.severity-option-emoji {
+.type-emoji,
+.feeling-emoji,
+.location-emoji,
+.smell-emoji {
   font-size: 40rpx;
   margin-bottom: 8rpx;
 }
 
-.severity-option-text {
+.type-text,
+.feeling-text,
+.location-text,
+.color-text,
+.smell-text {
   font-size: 24rpx;
   color: #666;
 }
 
-.mood-options {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 20rpx;
-}
-
-.mood-option {
-  width: 80rpx;
-  height: 80rpx;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 48rpx;
-  background: #f5f5f5;
+.color-circle {
+  width: 40rpx;
+  height: 40rpx;
   border-radius: 50%;
-  border: 3rpx solid transparent;
-  transition: all 0.3s;
+  margin-bottom: 8rpx;
+  border: 2rpx solid #e0e0e0;
 }
 
-.mood-option.active {
-  border-color: #ff6b6b;
-  background: #fff5f5;
-  transform: scale(1.1);
+.blood-check {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.blood-warning {
+  margin-top: 10rpx;
+  background: #fff3cd;
+  color: #856404;
+  padding: 15rpx;
+  border-radius: 8rpx;
+  font-size: 24rpx;
+  text-align: center;
 }
 
 .submit-btn {
   width: 100%;
   height: 88rpx;
-  background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+  background: linear-gradient(135deg, #8B4513 0%, #D2691E 100%);
   color: white;
   border-radius: 16rpx;
   font-size: 32rpx;
@@ -398,14 +410,14 @@
   margin-top: 20rpx;
 }
 
-/* 详情弹窗 - 关键修复 */
+/* 详情弹窗 - 如果后续需要 */
 .detail-modal {
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 1002;
+  z-index: 2200; /* 比添加弹窗(2100)更高 */
 }
 
 .detail-modal-content {
@@ -426,11 +438,9 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 40rpx 40rpx 30rpx; /* 减小左右内边距 */
+  padding: 40rpx 40rpx 30rpx;
   border-bottom: 1rpx solid #f0f0f0;
   flex-shrink: 0;
-  background: white;
-  z-index: 1;
 }
 
 .detail-title {
@@ -439,45 +449,38 @@
   color: #333;
 }
 
-/* 可滚动的详情内容 - 减小内边距 */
 .detail-body {
   flex: 1;
   overflow-y: auto;
-  padding: 30rpx 40rpx; /* 减小左右内边距，从 50rpx 改为 40rpx */
+  padding: 30rpx 40rpx;
   padding-bottom: 40rpx;
-  /* 添加 box-sizing 确保宽度计算正确 */
-  box-sizing: border-box;
 }
 
 .detail-section {
   margin-bottom: 30rpx;
 }
 
-.detail-time {
-  display: flex;
-  align-items: center;
-  gap: 10rpx;
-  font-size: 28rpx;
-  color: #666;
-  margin-bottom: 20rpx;
-}
-
-.detail-emoji {
-  font-size: 32rpx;
-}
-
-.detail-severity {
+.detail-user {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20rpx;
-  flex-wrap: wrap;
-  gap: 10rpx;
+  margin-bottom: 10rpx;
 }
 
-.detail-mood {
+.detail-username {
+  font-size: 32rpx;
+  font-weight: bold;
+  color: #333;
+}
+
+.detail-emoji {
+  font-size: 48rpx;
+}
+
+.detail-time {
   font-size: 24rpx;
   color: #999;
+  margin-bottom: 20rpx;
 }
 
 .detail-label {
@@ -488,49 +491,33 @@
   font-weight: 500;
 }
 
-/* 修复内容区域宽度 - 关键修改 */
 .detail-content {
-  width: 100%; /* 明确设置宽度为 100% */
+  width: 100%;
   background: #f5f5f5;
   border-radius: 12rpx;
-  padding: 20rpx; /* 内边距 */
-  box-sizing: border-box; /* 重要：包含 padding 在宽度内 */
+  padding: 20rpx;
+  box-sizing: border-box;
   font-size: 26rpx;
   color: #333;
   line-height: 1.8;
   word-break: break-word;
   white-space: pre-wrap;
-  min-height: 80rpx;
-  /* 防止溢出 */
-  overflow-wrap: break-word;
 }
 
-.detail-content.hurtful {
-  background: #fff5f5;
-  color: #ff6b6b;
+.detail-content.blood-warning {
+  background: #fff3cd;
+  color: #856404;
 }
 
-.reconcile-section {
-  text-align: center;
-  padding: 30rpx 0;
+.detail-color-show {
+  display: flex;
+  align-items: center;
+  gap: 15rpx;
 }
 
-.reconcile-success {
-  font-size: 32rpx;
-  color: #52c41a;
-  display: block;
-  margin-bottom: 20rpx;
-}
-
-.reconcile-btn {
-  width: 100%;
-  height: 88rpx;
-  background: linear-gradient(135deg, #52c41a 0%, #73d13d 100%);
-  color: white;
-  border-radius: 16rpx;
-  font-size: 32rpx;
-  border: none;
-  margin-top: 20rpx;
-  /* 添加 box-sizing */
-  box-sizing: border-box;
+.detail-color-circle {
+  width: 50rpx;
+  height: 50rpx;
+  border-radius: 50%;
+  border: 2rpx solid #e0e0e0;
 }

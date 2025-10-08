@@ -63,7 +63,7 @@
   </view>
 </view>
 
-<!-- 添加记录弹窗 - 修改为可滚动 -->
+<!-- 添加记录弹窗 - 在最外层阻止穿透 -->
 <view class="add-modal" wx:if="{{showAddModal}}">
   <view class="modal-mask" bindtap="closeAddModal"></view>
   <view class="add-modal-content">
@@ -71,9 +71,8 @@
       <text class="add-modal-title">记录一次吵架</text>
       <view class="close-btn" bindtap="closeAddModal">✕</view>
     </view>
-
-    <!-- 使用 scroll-view 让表单可滚动 -->
-    <scroll-view class="form-scroll" scroll-y enable-flex>
+    <!-- 用 view 替换 scroll-view -->
+    <view class="form-scroll">
       <view class="form">
         <view class="form-group">
           <text class="form-label">吵架时间</text>
@@ -167,20 +166,20 @@
           保存记录
         </button>
       </view>
-    </scroll-view>
+    </view>
   </view>
 </view>
 
-<!-- 详情弹窗 - 也改为可滚动 -->
-<view class="detail-modal" wx:if="{{showDetailModal && currentQuarrel}}">
-  <view class="modal-mask" bindtap="closeDetailModal"></view>
-  <view class="detail-modal-content">
+<!-- 详情弹窗 - 同样处理 -->
+<view class="detail-modal" wx:if="{{showDetailModal && currentQuarrel}}" catchtouchmove="preventTouchMove">
+  <view class="modal-mask" bindtap="closeDetailModal" catchtouchmove="preventTouchMove"></view>
+  <view class="detail-modal-content" catchtouchmove="stopPropagation">
     <view class="detail-header">
       <text class="detail-title">吵架详情</text>
       <view class="close-btn" bindtap="closeDetailModal">✕</view>
     </view>
 
-    <scroll-view class="detail-body" scroll-y>
+    <scroll-view class="detail-body" scroll-y enhanced show-scrollbar="{{false}}">
       <view class="detail-section">
         <view class="detail-time">
           <text class="detail-emoji">📅</text>
