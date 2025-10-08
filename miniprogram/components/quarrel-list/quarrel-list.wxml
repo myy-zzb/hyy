@@ -1,0 +1,230 @@
+<!-- miniprogram/components/quarrel-list/quarrel-list.wxml -->
+<view class="modal" wx:if="{{show}}">
+  <view class="modal-mask" bindtap="closeModal"></view>
+  <view class="modal-content">
+    <view class="modal-header">
+      <text class="modal-title">吵架记录 💢</text>
+      <view class="header-actions">
+        <view class="add-btn" bindtap="openAddModal">＋</view>
+        <view class="close-btn" bindtap="closeModal">✕</view>
+      </view>
+    </view>
+
+    <view class="stats-section">
+      <view class="stat-item">
+        <text class="stat-number">{{stats.total}}</text>
+        <text class="stat-label">总次数</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.reconciled}}</text>
+        <text class="stat-label">已和好</text>
+      </view>
+      <view class="stat-item">
+        <text class="stat-number">{{stats.unreconciled}}</text>
+        <text class="stat-label">未和好</text>
+      </view>
+    </view>
+
+    <view class="quarrels-list" wx:if="{{!loading}}">
+      <view class="empty" wx:if="{{quarrels.length === 0}}">
+        <text class="empty-icon">🕊️</text>
+        <text class="empty-text">还没有吵架记录</text>
+        <text class="empty-subtext">希望一直保持这个状态~</text>
+      </view>
+
+      <view class="quarrel-item" wx:for="{{quarrels}}" wx:key="_id" bindtap="viewDetail" data-quarrel="{{item}}">
+        <view class="item-header">
+          <view class="severity-badge" style="background: {{item.severityColor}}">
+            <text class="severity-emoji">{{item.severityEmoji}}</text>
+            <text class="severity-text">{{item.severityLabel}}</text>
+          </view>
+          <text class="item-mood">{{item.mood}}</text>
+        </view>
+        
+        <view class="item-content">
+          <view class="item-date">
+            <text>📅 {{item.quarrelDate}} {{item.quarrelTime}}</text>
+          </view>
+          <view class="item-reason">{{item.reason}}</view>
+          <view class="reconcile-status" wx:if="{{item.isReconciled}}">
+            <text class="reconcile-tag">❤️ 已和好</text>
+          </view>
+        </view>
+
+        <view class="item-actions" catchtap="deleteQuarrel" data-quarrel="{{item}}">
+          <text class="delete-icon">🗑️</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="loading" wx:if="{{loading}}">
+      <text>加载中...</text>
+    </view>
+  </view>
+</view>
+
+<!-- 添加记录弹窗 - 修改为可滚动 -->
+<view class="add-modal" wx:if="{{showAddModal}}">
+  <view class="modal-mask" bindtap="closeAddModal"></view>
+  <view class="add-modal-content">
+    <view class="add-modal-header">
+      <text class="add-modal-title">记录一次吵架</text>
+      <view class="close-btn" bindtap="closeAddModal">✕</view>
+    </view>
+
+    <!-- 使用 scroll-view 让表单可滚动 -->
+    <scroll-view class="form-scroll" scroll-y enable-flex>
+      <view class="form">
+        <view class="form-group">
+          <text class="form-label">吵架时间</text>
+          <view class="datetime-row">
+            <picker mode="date" value="{{formData.quarrelDate}}" bindchange="onDateChange" class="datetime-picker">
+              <view class="picker-display">📅 {{formData.quarrelDate}}</view>
+            </picker>
+            <picker mode="time" value="{{formData.quarrelTime}}" bindchange="onTimeChange" class="datetime-picker">
+              <view class="picker-display">🕐 {{formData.quarrelTime}}</view>
+            </picker>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">吵架原因</text>
+          <textarea
+            class="form-textarea"
+            placeholder="写下吵架的原因..."
+            value="{{formData.reason}}"
+            bindinput="onReasonInput"
+            maxlength="200"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">TA 说的过分的话</text>
+          <textarea
+            class="form-textarea"
+            placeholder="对方说了什么让你伤心的话..."
+            value="{{formData.hurtfulWords}}"
+            bindinput="onHurtfulWordsInput"
+            maxlength="500"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">我说的过分的话</text>
+          <textarea
+            class="form-textarea"
+            placeholder="我说了什么过分的话..."
+            value="{{formData.myWords}}"
+            bindinput="onMyWordsInput"
+            maxlength="500"
+          />
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">严重程度</text>
+          <view class="severity-options">
+            <view 
+              class="severity-option {{formData.severity === item.value ? 'active' : ''}}" 
+              wx:for="{{severityOptions}}" 
+              wx:key="value"
+              bindtap="selectSeverity"
+              data-severity="{{item.value}}"
+              style="border-color: {{item.color}}"
+            >
+              <text class="severity-option-emoji">{{item.emoji}}</text>
+              <text class="severity-option-text">{{item.label}}</text>
+            </view>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">当时心情</text>
+          <view class="mood-options">
+            <view 
+              class="mood-option {{formData.mood === item ? 'active' : ''}}" 
+              wx:for="{{moodOptions}}" 
+              wx:key="*this"
+              bindtap="selectMood"
+              data-mood="{{item}}"
+            >
+              {{item}}
+            </view>
+          </view>
+        </view>
+
+        <view class="form-group">
+          <text class="form-label">备注（可选）</text>
+          <textarea
+            class="form-textarea"
+            placeholder="其他想记录的..."
+            value="{{formData.note}}"
+            bindinput="onNoteInput"
+            maxlength="200"
+          />
+        </view>
+
+        <button class="submit-btn" bindtap="submitForm">
+          保存记录
+        </button>
+      </view>
+    </scroll-view>
+  </view>
+</view>
+
+<!-- 详情弹窗 - 也改为可滚动 -->
+<view class="detail-modal" wx:if="{{showDetailModal && currentQuarrel}}">
+  <view class="modal-mask" bindtap="closeDetailModal"></view>
+  <view class="detail-modal-content">
+    <view class="detail-header">
+      <text class="detail-title">吵架详情</text>
+      <view class="close-btn" bindtap="closeDetailModal">✕</view>
+    </view>
+
+    <scroll-view class="detail-body" scroll-y>
+      <view class="detail-section">
+        <view class="detail-time">
+          <text class="detail-emoji">📅</text>
+          <text>{{currentQuarrel.quarrelDate}} {{currentQuarrel.quarrelTime}}</text>
+        </view>
+        <view class="detail-severity">
+          <view class="severity-badge" style="background: {{currentQuarrel.severityColor}}">
+            <text>{{currentQuarrel.severityEmoji}} {{currentQuarrel.severityLabel}}</text>
+          </view>
+          <text class="detail-mood">心情: {{currentQuarrel.mood}}</text>
+        </view>
+      </view>
+
+      <view class="detail-section">
+        <text class="detail-label">💭 吵架原因</text>
+        <view class="detail-content">{{currentQuarrel.reason}}</view>
+      </view>
+
+      <view class="detail-section" wx:if="{{currentQuarrel.hurtfulWords}}">
+        <text class="detail-label">💔 TA 说的过分的话</text>
+        <view class="detail-content hurtful">{{currentQuarrel.hurtfulWords}}</view>
+      </view>
+
+      <view class="detail-section" wx:if="{{currentQuarrel.myWords}}">
+        <text class="detail-label">😔 我说的过分的话</text>
+        <view class="detail-content hurtful">{{currentQuarrel.myWords}}</view>
+      </view>
+
+      <view class="detail-section" wx:if="{{currentQuarrel.note}}">
+        <text class="detail-label">📝 备注</text>
+        <view class="detail-content">{{currentQuarrel.note}}</view>
+      </view>
+
+      <view class="detail-section reconcile-section" wx:if="{{currentQuarrel.isReconciled}}">
+        <text class="reconcile-success">❤️ 已经和好啦~</text>
+      </view>
+
+      <button 
+        class="reconcile-btn" 
+        wx:if="{{!currentQuarrel.isReconciled}}"
+        bindtap="markAsReconciled"
+      >
+        ❤️ 标记为已和好
+      </button>
+    </scroll-view>
+  </view>
+</view>

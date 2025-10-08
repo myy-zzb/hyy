@@ -40,9 +40,9 @@
       <view class="feature-icon">📅</view>
       <text class="feature-text">纪念日</text>
     </view>
-    <view class="feature-item">
-      <view class="feature-icon">📷</view>
-      <text class="feature-text">相册</text>
+    <view class="feature-item" bindtap="openQuarrelModal">
+        <view class="feature-icon">💢</view>
+        <text class="feature-text">吵架记录</text>
     </view>
   </view>
 </view>
@@ -68,4 +68,10 @@
   show="{{showAnniversaryModal}}" 
   userInfo="{{userInfo}}"
   bind:close="closeAnniversaryModal"
+/>
+
+<quarrel-list 
+  show="{{showQuarrelModal}}" 
+  userInfo="{{userInfo}}"
+  bind:close="closeQuarrelModal"
 />

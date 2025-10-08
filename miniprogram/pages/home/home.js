@@ -12,7 +12,8 @@ Page({
         showBindModal: false,
         showRequestsModal: false,
         showAnniversaryModal: false, // 新增
-        pendingRequestsCount: 0
+        pendingRequestsCount: 0,
+        showQuarrelModal: false
     },
 
     // 用于存储数据库监听器
@@ -278,6 +279,20 @@ Page({
     closeAnniversaryModal: function() {
         this.setData({
             showAnniversaryModal: false
+        });
+    },
+
+    // 打开吵架记录弹窗
+    openQuarrelModal: function() {
+        this.setData({
+            showQuarrelModal: true
+        });
+    },
+
+    // 关闭吵架记录弹窗
+    closeQuarrelModal: function() {
+        this.setData({
+            showQuarrelModal: false
         });
     },
 
